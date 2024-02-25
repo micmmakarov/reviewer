@@ -1,7 +1,11 @@
-import 'dotenv/config'
+import dotenv from "dotenv";
+dotenv.config({ path: process.ENV });
+console.log('HI', dotenv.config());
+
 import ts from "typescript";
 import fs from "fs";
 import OpenAI from "openai";
+import { commentOnLines } from "./github.mjs";
 
 const YOUR_OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const openai = new OpenAI({apiKey: YOUR_OPENAI_API_KEY});
@@ -76,7 +80,10 @@ async function processFile(fileName) {
     for (const child of getChildNodes(node)) {
       await visit(child, level + 1);
     }
-    console.log(reviews);
+    if (level === 0) {
+      console.log(reviews);
+      await commentOnLines(reviews);
+    }
   }
 
   await visit(sourceFile);
