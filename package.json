@@ -9,8 +9,11 @@
   "author": "Michael Makarov",
   "license": "ISC",
   "dependencies": {
+    "@actions/core": "^1.10.1",
+    "@actions/github": "^6.0.0",
     "axios": "^1.6.7",
     "dotenv": "^16.4.5",
+    "octokit": "^3.1.2",
     "openai": "^4.28.0",
     "typescript": "^5.3.3"
   }
