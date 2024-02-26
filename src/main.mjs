@@ -54,7 +54,7 @@ export class Engineer {
             const code = extractFunctionWithLineNumbers(fileContents, sourceFile);
             const reviewComments = await this.reviewer.writeReview(code, fileName);
             console.log("Review Comments: ", reviewComments);
-            await this.commenter.commentOnLines(reviewComments);
+            await this.commenter.commentOnLines(fileName, reviewComments);
         } else {
             await visit(sourceFile);
         }
