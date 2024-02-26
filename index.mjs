@@ -5,8 +5,7 @@ import { Engineer } from "./src/main.mjs";
 try {
   // `who-to-greet` input defined in action metadata file
   const changedFiles = core.getInput('file-list');
-  // gets a list of TS files
-  const tsFileList = changedFiles.split(' ').filter((f) => f.endsWith('.ts'));
+  const tsFileList = fs.readFileSync(fileName, "utf8").split('\n').filter((f) => f.endsWith('.ts'));
   console.log(`TS files changed: `, changedFiles, tsFileList);
   const githubToken = core.getInput('github-token');
   const openaiToken = core.getInput('openai-token');
