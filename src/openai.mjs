@@ -2,9 +2,6 @@ import dotenv from "dotenv";
 dotenv.config({ path: process.ENV });
 import OpenAI from "openai";
 
-const YOUR_OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const openai = new OpenAI({ apiKey: YOUR_OPENAI_API_KEY });
-
 const getPrompt = (code, name) => {
   return `You're a reviewer for very important enterprice code, expert in TS.
   You get paid to find bugs, find code improvements, bring best practices.
