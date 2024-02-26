@@ -21,7 +21,6 @@ export class Engineer {
         }
     }
     async processFile(fileName) {
-        const reviews = [];
         const fileContents = fs.readFileSync(fileName, "utf8");
         const sourceFile = ts.createSourceFile(fileName, fileContents, ts.ScriptTarget.Latest, true);
 
@@ -34,7 +33,8 @@ export class Engineer {
                 const code = extractFunctionWithLineNumbers(fileContents, node);
 
                 const reviewComment = await this.reviewer.writeReview(code, functionName);
-                reviews.push(...reviewComment);
+                console.log("Publishing Comments: ", reviewComment);
+                await this.commenter.commentOnLines(fileName, reviewComment);
             }
             if (ts.isArrowFunction(node) || ts.isFunctionExpression(node)) {
                 console.log(`Arrow Function or Function Expression`);
@@ -44,8 +44,6 @@ export class Engineer {
                 await visit(child, level + 1);
             }
             if (level === 0) {
-                console.log(reviews);
-                await this.commenter.commentOnLines(fileName, reviews);
                 console.log("Done visiting node for", fileName);
             }
         }

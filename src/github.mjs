@@ -26,7 +26,11 @@ export class Commenter {
           'X-GitHub-Api-Version': '2022-11-28'
         }
       };
-      await this.api.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
+      try {
+        await this.api.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
+      } catch (error) {
+        console.log('Error commenting on lines:', error.message, comment);
+      }
     }
   }
 }
