@@ -6,7 +6,7 @@ import fs from "fs";
 try {
   // `who-to-greet` input defined in action metadata file
   const changedFiles = core.getInput('file-list');
-  const tsFileList = fs.readFileSync(fileName, "utf8").split('\n').filter((f) => f.endsWith('.ts'));
+  const tsFileList = fs.readFileSync(changedFiles, "utf8").split('\n').filter((f) => f.endsWith('.ts'));
   console.log(`TS files changed: `, changedFiles, tsFileList);
   const githubToken = core.getInput('github-token');
   const openaiToken = core.getInput('openai-token');
