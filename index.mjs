@@ -4,7 +4,7 @@ import { Engineer } from "./src/main.mjs";
 
 try {
   // `who-to-greet` input defined in action metadata file
-  const changedFiles = core.getInput('changed-files');
+  const changedFiles = core.getInput('file-list');
   // gets a list of TS files
   const tsFileList = changedFiles.split('\n').filter((f) => f.endsWith('.ts'));
   console.log(`TS files changed: `, changedFiles, tsFileList);
