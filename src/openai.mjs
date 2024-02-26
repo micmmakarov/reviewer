@@ -24,7 +24,7 @@ export class Reviewer {
     const prompt = getPrompt(code, name);
     try {
 
-      const completion = await openai.chat.completions.create({
+      const completion = await this.api.chat.completions.create({
         messages: [{ "role": "user", "content": prompt }],
         model: "gpt-3.5-turbo",
       });
