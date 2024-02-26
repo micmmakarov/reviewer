@@ -1,69 +1,59 @@
 import dotenv from "dotenv";
 dotenv.config({ path: process.ENV });
 import { Octokit } from 'octokit';
-const octokit = new Octokit({
-    auth: process.env.GITHUB_TOKEN
-  })
 
+export class Commenter {
+  constructor(owner, repo, pullRequest, commitId, token = process.env.GITHUB_TOKEN) {
+    this.owner = owner;
+    this.repo = repo;
+    this.pullNumber = pullRequest;
+    this.commitId = commitId;
+    this.api = new Octokit({ auth: token });
+  }
 
-// Function to create a comment on a PR for a specific file and line number
-export async function createPRComment(token, owner, repo, pullNumber, body, commitId, path, position) {
-  const url = `https://api.github.com/repos/${owner}/${repo}/pulls/${pullNumber}/comments`;
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Accept': 'application/vnd.github.v3+json',
-    'Content-Type': 'application/json'
-  };
-  const data = {
-    body: body,
-    commit_id: commitId,
-    path: path,
-    position: position
-  };
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      // console.log('response', response);
-      throw new Error(`Error: ${response.status}`);
+  async commentOnLines(path, comments) {
+    for (const comment of comments) {
+      const { line, review: body } = comment;
+      const payload = {
+        owner: this.owner,
+        repo: this.repo,
+        pull_number: this.pullNumber,
+        body,
+        commit_id: this.commitId,
+        path,
+        line,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      };
+      await this.api.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
     }
-
-    const jsonResponse = await response.json();
-    // console.log('Comment created successfully:', jsonResponse);
-  } catch (error) {
-    console.error('Failed to create comment:', error.message);
   }
 }
 
-
 export const commentOnLines = async (comments) => {
-    // Example usage
-    const commitId = '44c11051254aac24785647528a785fdd1b664aaa'; // SHA of the commit at the head of the PR
-    const path = 'example3.ts';
-    for (const comment of comments) {
-        const { line, review: body } = comment;
-        const payload = {
-            owner: 'micmmakarov',
-            repo: 'review',
-            pull_number: '2',
-            body,
-            commit_id: commitId,
-            path: path,
-//            start_line: line,
-//            start_side: 'RIGHT',
-            line,
-            // side: 'RIGHT',
-            headers: {
-              'X-GitHub-Api-Version': '2022-11-28'
-            }
-          };
-        //console.log('payload', payload, comment);
-        await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload)
-        //await createPRComment(token, owner, repo, pullNumber, body, commitId, path, line);
-    }
+  // Example usage
+  const commitId = 'd202127548434484e26bdc3ac4d58adb9f05dbef'; // SHA of the commit at the head of the PR
+  const path = 'example3.ts';
+  for (const comment of comments) {
+    const { line, review: body } = comment;
+    const payload = {
+      owner: 'micmmakarov',
+      repo: 'review',
+      pull_number: '3',
+      body,
+      commit_id: commitId,
+      path: path,
+      //            start_line: line,
+      //            start_side: 'RIGHT',
+      line,
+      // side: 'RIGHT',
+      headers: {
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    };
+    //console.log('payload', payload, comment);
+    await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload)
+    //await createPRComment(token, owner, repo, pullNumber, body, commitId, path, line);
+  }
 }
