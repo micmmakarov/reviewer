@@ -34,34 +34,3 @@ export class Commenter {
     }
   }
 }
-
-export const commentOnLines = async (comments) => {
-  // Example usage
-  const commitId = 'd202127548434484e26bdc3ac4d58adb9f05dbef'; // SHA of the commit at the head of the PR
-  const path = 'example3.ts';
-  for (const comment of comments) {
-    const { line, review: body } = comment;
-    const payload = {
-      owner: 'micmmakarov',
-      repo: 'review',
-      pull_number: '3',
-      body,
-      commit_id: commitId,
-      path: path,
-      //            start_line: line,
-      //            start_side: 'RIGHT',
-      line,
-      // side: 'RIGHT',
-      headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
-    };
-    //console.log('payload', payload, comment);
-    try {
-      await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
-    } catch (error) {
-      console.log('Error commenting on lines:', error.message, comment);
-    }
-    //await createPRComment(token, owner, repo, pullNumber, body, commitId, path, line);
-  }
-}
