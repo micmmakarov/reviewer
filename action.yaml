@@ -1,8 +1,8 @@
-name: 'AI-Michael Review'
-description: 'Lets AI Michael review your PRs'
+name: 'AI-Reviewer'
+description: 'Will use chatgpt to review your PRs'
 inputs:
   file-list:  # id of input
-    description: 'Files to check'
+    description: 'The name of the file with the difference'
     required: true
     default: ''
   github-token:
