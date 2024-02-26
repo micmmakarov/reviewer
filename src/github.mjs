@@ -53,7 +53,11 @@ export const commentOnLines = async (comments) => {
       }
     };
     //console.log('payload', payload, comment);
-    await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload)
+    try {
+      await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
+    } catch (error) {
+      console.log('Error commenting on lines:', error.message, comment);
+    }
     //await createPRComment(token, owner, repo, pullNumber, body, commitId, path, line);
   }
 }

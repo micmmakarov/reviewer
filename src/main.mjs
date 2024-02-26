@@ -46,8 +46,8 @@ export class Engineer {
             if (level === 0) {
                 console.log(reviews);
                 await this.commenter.commentOnLines(fileName, reviews);
+                console.log("Done visiting node for", fileName);
             }
-            console.log("Done visiting node for", fileName);
         }
         if (fileContents.length < 17000) {
             console.log("File contents length: ", fileContents.length);
