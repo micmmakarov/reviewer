@@ -29,7 +29,7 @@ export class Commenter {
       try {
         await this.api.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/comments', payload);
       } catch (error) {
-        console.log('Error commenting on lines:', error.message, comment);
+        console.log('Error commenting on lines:', error.message, error, payload);
       }
     }
   }
