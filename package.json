@@ -1,8 +1,8 @@
 {
-  "name": "sq",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "ai-review-action",
+  "version": "0.0.1",
+  "description": "Writes reviews for PRs using OpenAI's GPT-3",
+  "main": "index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
