@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config({ path: process.ENV });
 import OpenAI from "openai";
 
 const getPrompt = (code, name) => {
