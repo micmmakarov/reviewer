@@ -1,6 +1,7 @@
 import core from '@actions/core';
 import github from '@actions/github';
 import { Engineer } from "./src/main.mjs";
+import fs from "fs";
 
 try {
   // `who-to-greet` input defined in action metadata file
