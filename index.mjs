@@ -12,7 +12,6 @@ try {
   const openaiToken = core.getInput('openai-token');
   const owner = github.context.repo.owner;
   const repo = github.context.repo.repo;
-  console.log(`Owner: ${owner}, Repo: ${repo}`, github.context);
   const pullRequest = github.context.payload.pull_request.number;
   const commitId = github.context.payload.pull_request.head.sha;
   const engineer = new Engineer(tsFileList,
