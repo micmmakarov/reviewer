@@ -1,7 +1,7 @@
 import fs from "fs";
 import { Commenter } from "./github.mjs";
 import { Reviewer } from "./openai.mjs";
-import { extractFunctionWithLineNumbers, getName } from "./utils.mjs";
+import { extractFunctionWithLineNumbers, getName, getChildNodes } from "./utils.mjs";
 import ts from "typescript";
 
 export class Engineer {
