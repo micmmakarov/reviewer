@@ -15,7 +15,9 @@ export class Engineer {
         this.reviewer = new Reviewer(openaiToken);
     }
     async processFiles() {
-
+        for (const file of this.files) {
+            await this.processFile(file);
+        }
     }
     async processFile(fileName) {
         const reviews = [];
