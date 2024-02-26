@@ -15,6 +15,7 @@ export class Engineer {
         this.reviewer = new Reviewer(openaiToken);
     }
     async processFiles() {
+        console.log("Processing files: ", this.files);
         for (const file of this.files) {
             await this.processFile(file);
         }
@@ -23,32 +24,31 @@ export class Engineer {
         const reviews = [];
         const fileContents = fs.readFileSync(fileName, "utf8");
         const sourceFile = ts.createSourceFile(fileName, fileContents, ts.ScriptTarget.Latest, true);
-    }
 
-    async visit(node, level = 0) {
-        const shouldCheck = ts.isMethodDeclaration(node) || ts.isFunctionDeclaration(node);
-        if (shouldCheck) {
-            const functionName = getName(node);
-            console.log("Function Name: ", functionName);
+        const visit = async (node, level = 0) => {
+            const shouldCheck = ts.isMethodDeclaration(node) || ts.isFunctionDeclaration(node);
+            if (shouldCheck) {
+                const functionName = getName(node);
+                console.log("Function Name: ", functionName);
 
-            const code = extractFunctionWithLineNumbers(fileContents, node);
+                const code = extractFunctionWithLineNumbers(fileContents, node);
 
-            const reviewComment = await this.reviewer.writeReview(code, functionName);
-            reviews.push(...reviewComment);
+                const reviewComment = await this.reviewer.writeReview(code, functionName);
+                reviews.push(...reviewComment);
+            }
+            if (ts.isArrowFunction(node) || ts.isFunctionExpression(node)) {
+                console.log(`Arrow Function or Function Expression`);
+            }
+
+            for (const child of getChildNodes(node)) {
+                await visit(child, level + 1);
+            }
+            if (level === 0) {
+                console.log(reviews);
+                await this.commenter.commentOnLines(fileName, reviews);
+            }
+            console.log("Done visiting node for", fileName);
         }
-        if (ts.isArrowFunction(node) || ts.isFunctionExpression(node)) {
-            console.log(`Arrow Function or Function Expression`);
-        }
-
-        for (const child of getChildNodes(node)) {
-            await visit(child, level + 1);
-        }
-        if (level === 0) {
-            console.log(reviews);
-            await this.commenter.commentOnLines(fileName, reviews);
-        }
-        console.log("Done visiting node for", fileName);
-
         if (fileContents.length < 17000) {
             console.log("File contents length: ", fileContents.length);
             const code = extractFunctionWithLineNumbers(fileContents, sourceFile);
