@@ -14,5 +14,5 @@ inputs:
     required: true
     default: ''
 runs:
-  using: 'node18'
+  using: 'node20'
   main: 'index.mjs'
