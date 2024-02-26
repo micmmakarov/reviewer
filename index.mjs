@@ -17,7 +17,9 @@ try {
   const engineer = new Engineer(tsFileList,
     { owner, repo, pullRequest, commitId },
     { githubToken, openaiToken });
-  engineer.processFiles();
+  engineer.processFiles().then((result) => {
+    console.log('Processing result: ', result);
+  });
 } catch (error) {
   core.setFailed(error.message);
 }
