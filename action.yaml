@@ -1,13 +1,18 @@
 name: 'AI-Michael Review'
-description: 'Reviews your PRs a bit'
+description: 'Lets AI Michael review your PRs'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  file-list:  # id of input
+    description: 'Files to check'
     required: true
-    default: 'World'
-outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+    default: ''
+  github-token:
+    description: 'Token to use for GitHub API'
+    required: true
+    default: ''
+  openai-token:
+    description: 'Token to use for OpenAI API'
+    required: true
+    default: ''
 runs:
   using: 'node18'
   main: 'index.mjs'
